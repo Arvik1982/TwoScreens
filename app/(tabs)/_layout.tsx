@@ -1,5 +1,9 @@
+import AnalyticsIcon from '@/assets/svg/TabbarIcons/AnalyticsIcon';
+import ChatsIcon from '@/assets/svg/TabbarIcons/ChatsIcon';
+import HistoryIcon from '@/assets/svg/TabbarIcons/HistoryIcon';
+import HomeIcon from '@/assets/svg/TabbarIcons/HomeIcon';
+import PaymentsIcon from '@/assets/svg/TabbarIcons/PaymentsIcon';
 import { Haptic } from '@/components/Tapbar/Haptic';
-import { IconSymbol } from '@/components/ui/iconSymbol';
 import { Colors } from '@/constants/colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Tabs } from 'expo-router';
@@ -12,6 +16,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
         headerShown: false,
         tabBarButton: Haptic,
         tabBarStyle: {
@@ -26,45 +31,38 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
-          ),
+          // tabBarIcon: ({ color }) => (
+          //   <IconSymbol size={28} name="house.fill" color={color} />
+          // ),
+          tabBarIcon: ({ color }) => <HomeIcon color={color} />,
         }}
       />
       <Tabs.Screen
         name="payments"
         options={{
           title: 'Payments',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <PaymentsIcon color={color} />,
         }}
       />
       <Tabs.Screen
         name="history"
         options={{
           title: 'History',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <HistoryIcon color={color} />,
         }}
       />
       <Tabs.Screen
         name="analytics"
         options={{
           title: 'Analitics',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <AnalyticsIcon color={color} />,
         }}
       />
       <Tabs.Screen
         name="chats"
         options={{
           title: 'Chats',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <ChatsIcon color={color} />,
         }}
       />
     </Tabs>

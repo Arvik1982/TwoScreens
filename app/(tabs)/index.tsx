@@ -1,3 +1,4 @@
+import AvatarIcon from '@/assets/svg/TopIcons/AvatarIcon';
 import { ThemedView } from '@/components/ThemedView';
 import { StyleSheet } from 'react-native';
 
@@ -6,15 +7,26 @@ export default function HomeScreen() {
     <ThemedView style={styles.contentContainer}>
       <ThemedView style={styles.topBox}>
         <ThemedView style={styles.topBoxLeft}>
-          <ThemedView style={styles.boxLeftAvatar}></ThemedView>
+          <ThemedView style={styles.boxLeftAvatar}>
+            <AvatarIcon />
+          </ThemedView>
           <ThemedView style={styles.boxLeftTitle}></ThemedView>
           <ThemedView style={styles.boxLeftChevron}></ThemedView>
         </ThemedView>
         <ThemedView style={styles.topBoxRight}></ThemedView>
       </ThemedView>
       <ThemedView style={styles.nav}></ThemedView>
-      <ThemedView style={styles.details}></ThemedView>
-      <ThemedView style={styles.expencesBox}></ThemedView>
+      <ThemedView style={styles.details}>
+        <ThemedView style={styles.detailsCardsContainer}></ThemedView>
+        <ThemedView style={styles.detailsButtonContainer}></ThemedView>
+      </ThemedView>
+      <ThemedView style={styles.expencesBox}>
+        <ThemedView style={styles.expencesBoxHeadding}></ThemedView>
+        <ThemedView style={styles.expencesBoxSections}>
+          <ThemedView style={styles.boxSectionsToday}></ThemedView>
+          <ThemedView style={styles.boxSectionsYesterday}></ThemedView>
+        </ThemedView>
+      </ThemedView>
     </ThemedView>
   );
 }
@@ -73,6 +85,8 @@ const styles = StyleSheet.create({
     gap: 16,
     opacity: 1,
   },
+  detailsCardsContainer: {},
+  detailsButtonContainer: {},
   expencesBox: {
     width: 375,
     height: 377,
@@ -81,4 +95,8 @@ const styles = StyleSheet.create({
     gap: 32,
     opacity: 1,
   },
+  expencesBoxHeadding: {},
+  expencesBoxSections: {},
+  boxSectionsToday: {},
+  boxSectionsYesterday: {},
 });
