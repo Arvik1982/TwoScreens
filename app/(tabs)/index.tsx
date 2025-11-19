@@ -1,4 +1,8 @@
 import ChevronIcon from '@/assets/svg/CommonIcons/ChevronIcon';
+import BonusIcon from '@/assets/svg/NavIcons/BonusIcon';
+import DeliveryIcon from '@/assets/svg/NavIcons/DeliveryIcon';
+import SupportIcon from '@/assets/svg/NavIcons/SupportIcon';
+import TravelIcon from '@/assets/svg/NavIcons/TravelIcon';
 import AvatarIcon from '@/assets/svg/TopIcons/AvatarIcon';
 import QrIcon from '@/assets/svg/TopIcons/QrIcon';
 import { ThemedText } from '@/components/ThemedText';
@@ -27,7 +31,25 @@ export default function HomeScreen() {
           <QrIcon />
         </ThemedView>
       </ThemedView>
-      <ThemedView style={styles.nav}></ThemedView>
+      <ThemedView style={styles.nav}>
+        <ThemedView style={styles.navItemContainer}>
+          <TravelIcon />
+          <ThemedText>Tggg</ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.navItemContainer}>
+          <DeliveryIcon />
+          <ThemedText>Tggg</ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.navItemContainer}>
+          <BonusIcon />
+          <ThemedText>Tggg</ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.navItemContainer}>
+          <SupportIcon />
+          <ThemedText>Tggg</ThemedText>
+        </ThemedView>
+      </ThemedView>
+
       <ThemedView style={styles.details}>
         <ThemedView style={styles.detailsCardsContainer}></ThemedView>
         <ThemedView style={styles.detailsButtonContainer}></ThemedView>
@@ -102,12 +124,25 @@ const styles = StyleSheet.create({
     // gap: 8,
   },
   nav: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
     width: 375,
     height: 64,
     paddingRight: 16,
     paddingLeft: 16,
     gap: 24,
   },
+  navItemContainer: {
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: 64,
+    height: 64,
+    gap: 8,
+    borderRadius: 16,
+  },
+
   details: {
     width: 375,
     height: 98,
