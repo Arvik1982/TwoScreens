@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/colors';
 import expences from '@/constants/mockData/expences.json';
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -15,10 +16,12 @@ const WeekExpencesBar = () => {
   const sortedData = [...expencesData].sort(
     (a, b) => Math.abs(b.expences) - Math.abs(a.expences),
   );
-  const colors = ['#CC3F02', '#FE5900', '#FF9332', '#FFD8A5'];
+
+  const barColors = Colors.default.expencesBarColors;
+
   const colorMap: { [key: number]: string } = {};
   sortedData.forEach((item, index) => {
-    colorMap[item.id] = colors[index];
+    colorMap[item.id] = barColors[index];
   });
 
   const absoluteExpences = expencesData.map((item) => Math.abs(item.expences));
@@ -78,7 +81,6 @@ const WeekExpencesBar = () => {
     </View>
   );
 };
-export default memo(WeekExpencesBar);
 
 const styles = StyleSheet.create({
   heddingLineBox: {
@@ -89,3 +91,4 @@ const styles = StyleSheet.create({
     gap: 2,
   },
 });
+export default memo(WeekExpencesBar);

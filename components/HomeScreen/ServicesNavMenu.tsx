@@ -53,7 +53,6 @@ const ServicesNavMenu = () => {
     </ThemedView>
   );
 };
-export default memo(ServicesNavMenu);
 
 const styles = StyleSheet.create({
   nav: {
@@ -76,3 +75,4 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
 });
+export default memo(ServicesNavMenu);

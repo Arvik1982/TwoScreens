@@ -4,9 +4,11 @@ import AvatarIcon from '@/assets/svg/TopIcons/AvatarIcon';
 import QrIcon from '@/assets/svg/TopIcons/QrIcon';
 import CardDetailsList from '@/components/HomeScreen/CardsDetaisList';
 import ServicesNavMenu from '@/components/HomeScreen/ServicesNavMenu';
+import TransactionList from '@/components/HomeScreen/TransactionsList';
 import WeekExpencesBar from '@/components/HomeScreen/WeekExpencesBar';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import transactions from '@/constants/mockData/transactions.json';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function HomeScreen() {
@@ -19,7 +21,7 @@ export default function HomeScreen() {
           </ThemedView>
 
           <ThemedView style={styles.boxLeftTitle}>
-            <ThemedText type="default">'Name User'</ThemedText>
+            <ThemedText type="default">Charlotte</ThemedText>
           </ThemedView>
 
           <ThemedView style={styles.boxLeftChevron}>
@@ -49,18 +51,37 @@ export default function HomeScreen() {
 
       <ThemedView style={styles.expencesBox}>
         <ThemedView style={styles.expencesBoxHeadding}>
-          {/* <ThemedView style={styles.headdingTitleContainer}>
-            <ThemedText style={styles.titleContainerLeft}></ThemedText>
-            <ThemedText style={styles.titleContainerRight}></ThemedText>
-          </ThemedView> */}
+          <ThemedView
+            style={{
+              width: '100%',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+            }}
+          >
+            <ThemedView style={{ flexDirection: 'row' }}>
+              <ThemedText type="defaultMedium" style={{ fontSize: 21 }}>
+                Expenses in
+              </ThemedText>
+              <ThemedText
+                type="defaultMedium"
+                style={{ color: '#FE5900', fontSize: 21 }}
+              >
+                {' '}
+                June
+              </ThemedText>
+            </ThemedView>
+            <ThemedText
+              type="defaultMedium"
+              style={{ color: '#AEAEAE', fontSize: 21 }}
+            >
+              $5,091
+            </ThemedText>
+          </ThemedView>
 
           <WeekExpencesBar />
         </ThemedView>
 
-        <ThemedView style={styles.expencesBoxSections}>
-          <ThemedView style={styles.boxSectionsToday}></ThemedView>
-          <ThemedView style={styles.boxSectionsYesterday}></ThemedView>
-        </ThemedView>
+        <TransactionList transactions={transactions} />
       </ThemedView>
     </ThemedView>
   );
@@ -152,7 +173,10 @@ const styles = StyleSheet.create({
     gap: 32,
     opacity: 1,
   },
-  expencesBoxHeadding: {},
+  expencesBoxHeadding: {
+    gap: 16,
+    height: 49,
+  },
 
   expencesBoxSections: {},
   boxSectionsToday: {},
