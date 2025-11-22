@@ -7,10 +7,6 @@ export default function Profile() {
   return (
     <ThemedView style={{ flex: 1, padding: 16 }}>
       <ThemedText type="title">Экран профиля</ThemedText>
-      <ThemedText type="default">
-        Это stack screen с собственной навигацией
-      </ThemedText>
-
       <Button title="Назад" onPress={() => router.back()} />
     </ThemedView>
   );

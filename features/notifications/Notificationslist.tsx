@@ -1,176 +1,88 @@
-import BillsonImg from '@/shared/assets/images/Billson.jpg';
-import NetflixImg from '@/shared/assets/images/Nfx.png';
-import StarbucksImg from '@/shared/assets/images/Sbks.png';
-
+import ann from '@/shared/assets/images/ann.jpg';
+import arrow from '@/shared/assets/images/arrow.png';
+import planet from '@/shared/assets/images/planet.png';
+import shield from '@/shared/assets/images/shield.png';
 import { Colors } from '@/shared/config/colors';
-import { GroupedTransactions, Transaction } from '@/types/types';
-import React, { memo, useMemo } from 'react';
+import { groupTransactions } from '@/shared/lib/functions/groupedTransactions';
+import { GroupedTransactions, Notification } from '@/types/types';
+import React, { memo } from 'react';
 import { Image, ScrollView, StyleSheet } from 'react-native';
 import { ThemedText } from '../../shared/ui/ThemedText';
 import { ThemedView } from '../../shared/ui/ThemedView';
 
-interface TransactionListProps {
-  transactions: Transaction[];
+interface NotificationsListProps {
+  notifications: Notification[];
 }
 
-const NotificationsList: React.FC<TransactionListProps> = ({
-  transactions,
+const NotificationsList: React.FC<NotificationsListProps> = ({
+  notifications: notifications,
 }) => {
   const imageMap = {
-    'Billson.jpg': BillsonImg,
-    'Sbks.jpg': StarbucksImg,
-    'Nfx.jpg': NetflixImg,
+    'planet.png': planet,
+    'arrow.png': arrow,
+    'shield.png': shield,
+    'ann.jpg': ann,
   };
 
-  const groupedTransactions = useMemo((): GroupedTransactions[] => {
-    const groups: { [key: string]: Transaction[] } = {};
+  const groupedNotifications = groupTransactions(notifications);
 
-    transactions.forEach((transaction) => {
-      const dateOnly = transaction.date.split(',')[0].trim();
-
-      if (!groups[dateOnly]) {
-        groups[dateOnly] = [];
-      }
-      groups[dateOnly].push(transaction);
-    });
-
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    const getGroupTitle = (
-      dateString: string,
-      customToday?: Date,
-      customYesterday?: Date,
-    ): string => {
-      const months: { [key: string]: string } = {
-        Jan: 'Jan',
-        Feb: 'Feb',
-        Mar: 'Mar',
-        Apr: 'Apr',
-        May: 'May',
-        Jun: 'Jun',
-        Jul: 'Jul',
-        Aug: 'Aug',
-        Sep: 'Sep',
-        Oct: 'Oct',
-        Nov: 'Nov',
-        Dec: 'Dec',
-      };
-
-      const [monthStr, dayStr] = dateString.split(' ');
-      const day = parseInt(dayStr);
-      const month = months[monthStr];
-
-      const currentYear = new Date().getFullYear();
-      const transactionDate = new Date(
-        currentYear,
-        Object.keys(months).indexOf(monthStr),
-        day,
-      );
-
-      // Используем кастомные даты или текущие по умолчанию
-      const today = customToday || new Date();
-      const yesterday = customYesterday || new Date(today);
-      if (!customYesterday) {
-        yesterday.setDate(yesterday.getDate() - 1);
-      }
-
-      if (transactionDate.toDateString() === today.toDateString()) {
-        return 'Today';
-      }
-
-      if (transactionDate.toDateString() === yesterday.toDateString()) {
-        return 'Yesterday';
-      }
-
-      return `${month} ${day}`;
-    };
-
-    const customToday = new Date(2025, 5, 9); // 9 June 2025
-    const customYesterday = new Date(2025, 5, 8); // 8 June 2025
-
-    return Object.keys(groups).map((date) => ({
-      title: getGroupTitle(date, customToday, customYesterday),
-      data: groups[date],
-    }));
-  }, [transactions]);
-
-  const renderTransaction = (transaction: Transaction) => {
+  const renderTransaction = (notification: Notification) => {
     return (
       <ThemedView
         lightColor={Colors.light.backgroundItem}
-        darkColor={Colors.dark.backgroundItem}
-        key={transaction.id}
-        style={styles.transactionItem}
+        key={notification.id}
+        style={styles.notificationItem}
       >
-        <ThemedView
-          style={styles.transactionLeft}
-          lightColor={Colors.light.backgroundItem}
-          darkColor={Colors.dark.backgroundItem}
-        >
-          <ThemedView
-            style={[
-              styles.transactionIcon,
-              !transaction.img && styles.iconAdditional,
-            ]}
-            lightColor={Colors.light.backgroundItem}
-            darkColor={Colors.dark.backgroundItem}
-          >
-            {transaction.img ? (
+        <ThemedView style={styles.left}>
+          {notification.img ? (
+            <ThemedView style={styles.imgContainer}>
               <Image
-                style={styles.transactionImg}
-                source={imageMap[transaction.img as keyof typeof imageMap]}
-              ></Image>
-            ) : (
-              <ThemedText darkColor="#0F0F0F">
-                {transaction.name.charAt(0)}
-              </ThemedText>
-            )}
-          </ThemedView>
-          <ThemedView
-            lightColor={Colors.light.backgroundItem}
-            darkColor={Colors.dark.backgroundItem}
-          >
-            <ThemedText type="defaultMedium">{transaction.name}</ThemedText>
-            <ThemedView
-              lightColor={Colors.light.backgroundItem}
-              darkColor={Colors.dark.backgroundItem}
-            >
-              <ThemedView
-                lightColor={Colors.light.backgroundItem}
-                darkColor={Colors.dark.backgroundItem}
-                style={styles.transactionType}
-              >
-                <ThemedView
-                  lightColor={Colors.light.backgroundItem}
-                  darkColor={Colors.dark.backgroundItem}
-                  style={styles.dot}
-                ></ThemedView>
-                <ThemedText style={{ color: '#B3B3B3' }} type="default">
-                  {transaction.type}
-                </ThemedText>
-              </ThemedView>
+                style={styles.img}
+                source={imageMap[notification.img as keyof typeof imageMap]}
+              />
             </ThemedView>
-          </ThemedView>
+          ) : (
+            <ThemedText darkColor="#0F0F0F">
+              {notification.name.charAt(0)}
+            </ThemedText>
+          )}
         </ThemedView>
-        <ThemedView
-          lightColor={Colors.light.backgroundItem}
-          darkColor={Colors.dark.backgroundItem}
-        >
-          <ThemedText type="defaultMedium">
-            ${Math.abs(transaction.summ).toFixed(2)}
+        <ThemedView style={styles.center}>
+          <ThemedText style={styles.centerHeader}>
+            {notification.name}
           </ThemedText>
-          <ThemedText style={{ color: '#B3B3B3' }} type="default">
-            {transaction.date}
+
+          <ThemedText style={styles.centerSumm}>
+            {notification.summ > 0 ? '+$' : notification.summ !== 0 ? '-$' : ''}
+            {notification.summ !== 0 && Math.abs(notification.summ)}
           </ThemedText>
+
+          <ThemedText style={styles.centerDescription}>
+            {notification.description}
+          </ThemedText>
+
+          <ThemedText style={{ flexDirection: 'row' }}>
+            <ThemedText style={styles.centerDate}>
+              {notification.year}
+            </ThemedText>
+            <ThemedText style={styles.centerType}>
+              · {notification.noteType}
+            </ThemedText>
+          </ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.right}>
+          <ThemedView
+            lightColor={Colors.light.tint}
+            darkColor={Colors.dark.tint}
+            style={styles.dot}
+          ></ThemedView>
         </ThemedView>
       </ThemedView>
     );
   };
 
   const renderDayGroup = (group: GroupedTransactions) => (
-    <ThemedView key={group.title} style={styles.dayGroup}>
+    <ThemedView key={group.title + group.data} style={styles.dayGroup}>
       <ThemedText style={{ fontSize: 16 }} type="defaultMedium">
         {group.title}
       </ThemedText>
@@ -182,7 +94,7 @@ const NotificationsList: React.FC<TransactionListProps> = ({
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {groupedTransactions.map(renderDayGroup)}
+      {groupedNotifications.map(renderDayGroup)}
     </ScrollView>
   );
 };
@@ -195,6 +107,8 @@ const styles = StyleSheet.create({
   dayGroup: {
     marginBottom: 24,
     gap: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1F1F1F',
   },
 
   transactionsList: {
@@ -202,23 +116,24 @@ const styles = StyleSheet.create({
     borderRadius: 0,
   },
 
-  transactionItem: {
+  notificationItem: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 70,
+    justifyContent: 'flex-start',
+
     gap: 12,
-    borderRadius: 16,
-    padding: 16,
+
+    paddingVertical: 16,
     marginBottom: 3,
-  },
-  transactionLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    width: '100%',
+    minHeight: 116,
+    paddingHorizontal: 16,
     backgroundColor: 'transparent',
-    flex: 1,
   },
-  transactionIcon: {
+  left: {
+    alignItems: 'flex-start',
+  },
+
+  icon: {
     width: 40,
     height: 40,
     borderRadius: 12,
@@ -229,15 +144,45 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  transactionImg: {
+
+  imgContainer: {
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#0F0F0F',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
   },
+  img: {
+    width: 25,
+    height: 25,
+  },
+  center: {
+    height: '100%',
+    alignItems: 'flex-start',
+    backgroundColor: 'transparent',
+    flex: 1,
+    flexShrink: 1,
+  },
+
+  centerHeader: {},
+  centerSumm: {},
+  centerDescription: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    backgroundColor: 'transparent',
+  },
+  centerDate: {},
+  centerType: {},
+
+  right: {
+    height: '100%',
+    alignItems: 'flex-start',
+    backgroundColor: 'transparent',
+    width: 20,
+  },
+
   transactionType: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -1,10 +1,10 @@
 import BillsonImg from '@/shared/assets/images/Billson.jpg';
 import NetflixImg from '@/shared/assets/images/Nfx.png';
 import StarbucksImg from '@/shared/assets/images/Sbks.png';
-
 import { Colors } from '@/shared/config/colors';
+import { groupTransactions } from '@/shared/lib/functions/groupedTransactions';
 import { GroupedTransactions, Transaction } from '@/types/types';
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import { Image, ScrollView, StyleSheet } from 'react-native';
 import { ThemedText } from '../../shared/ui/ThemedText';
 import { ThemedView } from '../../shared/ui/ThemedView';
@@ -20,79 +20,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
     'Nfx.jpg': NetflixImg,
   };
 
-  const groupedTransactions = useMemo((): GroupedTransactions[] => {
-    const groups: { [key: string]: Transaction[] } = {};
-
-    transactions.forEach((transaction) => {
-      const dateOnly = transaction.date.split(',')[0].trim();
-
-      if (!groups[dateOnly]) {
-        groups[dateOnly] = [];
-      }
-      groups[dateOnly].push(transaction);
-    });
-
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    const getGroupTitle = (
-      dateString: string,
-      customToday?: Date,
-      customYesterday?: Date,
-    ): string => {
-      const months: { [key: string]: string } = {
-        Jan: 'Jan',
-        Feb: 'Feb',
-        Mar: 'Mar',
-        Apr: 'Apr',
-        May: 'May',
-        Jun: 'Jun',
-        Jul: 'Jul',
-        Aug: 'Aug',
-        Sep: 'Sep',
-        Oct: 'Oct',
-        Nov: 'Nov',
-        Dec: 'Dec',
-      };
-
-      const [monthStr, dayStr] = dateString.split(' ');
-      const day = parseInt(dayStr);
-      const month = months[monthStr];
-
-      const currentYear = new Date().getFullYear();
-      const transactionDate = new Date(
-        currentYear,
-        Object.keys(months).indexOf(monthStr),
-        day,
-      );
-
-      // Используем кастомные даты или текущие по умолчанию
-      const today = customToday || new Date();
-      const yesterday = customYesterday || new Date(today);
-      if (!customYesterday) {
-        yesterday.setDate(yesterday.getDate() - 1);
-      }
-
-      if (transactionDate.toDateString() === today.toDateString()) {
-        return 'Today';
-      }
-
-      if (transactionDate.toDateString() === yesterday.toDateString()) {
-        return 'Yesterday';
-      }
-
-      return `${month} ${day}`;
-    };
-
-    const customToday = new Date(2025, 5, 9); // 9 June 2025
-    const customYesterday = new Date(2025, 5, 8); // 8 June 2025
-
-    return Object.keys(groups).map((date) => ({
-      title: getGroupTitle(date, customToday, customYesterday),
-      data: groups[date],
-    }));
-  }, [transactions]);
+  const groupedTransactions = groupTransactions(transactions);
 
   const renderTransaction = (transaction: Transaction) => {
     return (
@@ -119,7 +47,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
               <Image
                 style={styles.transactionImg}
                 source={imageMap[transaction.img as keyof typeof imageMap]}
-              ></Image>
+              />
             ) : (
               <ThemedText darkColor="#0F0F0F">
                 {transaction.name.charAt(0)}

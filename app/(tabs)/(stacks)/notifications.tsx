@@ -1,7 +1,7 @@
 import Notificationslist from '@/features/notifications/Notificationslist';
 import ChevronLeftIcon from '@/shared/assets/svg/CommonIcons/ChevroneLeftIcon';
 import NotificationIcon from '@/shared/assets/svg/CommonIcons/NotificationIcon';
-import transactions from '@/shared/constants/mockData/transactions.json';
+import notifications from '@/shared/constants/mockData/notifications.json';
 import { ThemedText } from '@/shared/ui/ThemedText';
 import { ThemedView } from '@/shared/ui/ThemedView';
 import { router } from 'expo-router';
@@ -62,8 +62,9 @@ export default function Notifications() {
               key={index + item}
               style={{
                 padding: 12,
-                borderBottomColor: index === selectedItemIndex ? '#FE5900' : '',
-                borderBottomWidth: index === selectedItemIndex ? 2 : 0,
+                borderBottomColor:
+                  index === selectedItemIndex ? '#FE5900' : '#1F1F1F',
+                borderBottomWidth: index === selectedItemIndex ? 2 : 1,
               }}
               onPress={() => selectItemFunction(index)}
             >
@@ -76,7 +77,7 @@ export default function Notifications() {
           );
         })}
       </ThemedView>
-      <Notificationslist transactions={transactions} />
+      <Notificationslist notifications={notifications} />
     </ThemedView>
   );
 }
