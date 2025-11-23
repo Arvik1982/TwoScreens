@@ -1,4 +1,4 @@
-import { monthsList } from '@/shared/constants/constants';
+import { MONTH_LIST } from '@/shared/constants/constants';
 import { GroupedTransactions, Transaction } from '@/types/types';
 
 export const groupTransactions = (
@@ -23,7 +23,7 @@ export const groupTransactions = (
     customToday?: Date,
     customYesterday?: Date,
   ): string => {
-    const months = monthsList;
+    const months = MONTH_LIST;
 
     const [monthStr, dayStr] = dateString.split(' ');
     const day = parseInt(dayStr);

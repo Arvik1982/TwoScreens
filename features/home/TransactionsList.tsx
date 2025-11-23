@@ -1,10 +1,8 @@
-import BillsonImg from '@/shared/assets/images/Billson.jpg';
-import NetflixImg from '@/shared/assets/images/Nfx.png';
-import StarbucksImg from '@/shared/assets/images/Sbks.png';
 import { Colors } from '@/shared/config/colors';
+import { IMAGE_MAP } from '@/shared/constants/constants';
 import { groupTransactions } from '@/shared/lib/functions/groupedTransactions';
 import { GroupedTransactions, Transaction } from '@/types/types';
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Image, ScrollView, StyleSheet } from 'react-native';
 import { ThemedText } from '../../shared/ui/ThemedText';
 import { ThemedView } from '../../shared/ui/ThemedView';
@@ -14,15 +12,9 @@ interface TransactionListProps {
 }
 
 const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
-  const imageMap = {
-    'Billson.jpg': BillsonImg,
-    'Sbks.jpg': StarbucksImg,
-    'Nfx.jpg': NetflixImg,
-  };
-
   const groupedTransactions = groupTransactions(transactions);
 
-  const renderTransaction = (transaction: Transaction) => {
+  const renderTransaction = useCallback((transaction: Transaction) => {
     return (
       <ThemedView
         lightColor={Colors.light.backgroundItem}
@@ -46,7 +38,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
             {transaction.img ? (
               <Image
                 style={styles.transactionImg}
-                source={imageMap[transaction.img as keyof typeof imageMap]}
+                source={IMAGE_MAP[transaction.img as keyof typeof IMAGE_MAP]}
               />
             ) : (
               <ThemedText darkColor="#0F0F0F">
@@ -73,7 +65,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
                   darkColor={Colors.dark.backgroundItem}
                   style={styles.dot}
                 ></ThemedView>
-                <ThemedText style={{ color: '#B3B3B3' }} type="default">
+                <ThemedText style={styles.additionalColor} type="default">
                   {transaction.type}
                 </ThemedText>
               </ThemedView>
@@ -89,23 +81,26 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
               ${Math.abs(transaction.summ).toFixed(2)}
             </ThemedText>
           )}
-          <ThemedText style={{ color: '#B3B3B3' }} type="default">
+          <ThemedText style={styles.additionalColor} type="default">
             {transaction.date}
           </ThemedText>
         </ThemedView>
       </ThemedView>
     );
-  };
+  }, []);
 
-  const renderDayGroup = (group: GroupedTransactions) => (
-    <ThemedView key={group.title} style={styles.dayGroup}>
-      <ThemedText style={{ fontSize: 16 }} type="defaultMedium">
-        {group.title}
-      </ThemedText>
-      <ThemedView style={styles.transactionsList}>
-        {group.data.map(renderTransaction)}
+  const renderDayGroup = useCallback(
+    (group: GroupedTransactions) => (
+      <ThemedView key={group.title} style={styles.dayGroup}>
+        <ThemedText style={styles.font16} type="defaultMedium">
+          {group.title}
+        </ThemedText>
+        <ThemedView style={styles.transactionsList}>
+          {group.data.map(renderTransaction)}
+        </ThemedView>
       </ThemedView>
-    </ThemedView>
+    ),
+    [],
   );
 
   return (
@@ -172,6 +167,8 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   dot: { width: 6, height: 6, borderRadius: 50 },
+  font16: { fontSize: 16 },
+  additionalColor: { color: '#B3B3B3' },
 });
 
 export default memo(TransactionList);

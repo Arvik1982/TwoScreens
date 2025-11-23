@@ -1,11 +1,8 @@
-import ann from '@/shared/assets/images/ann.jpg';
-import arrow from '@/shared/assets/images/arrow.png';
-import planet from '@/shared/assets/images/planet.png';
-import shield from '@/shared/assets/images/shield.png';
 import { Colors } from '@/shared/config/colors';
+import { IMAGE_MAP } from '@/shared/constants/constants';
 import { groupTransactions } from '@/shared/lib/functions/groupedTransactions';
 import { GroupedTransactions, Notification } from '@/types/types';
-import React, { memo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { Image, ScrollView, StyleSheet } from 'react-native';
 import { ThemedText } from '../../shared/ui/ThemedText';
 import { ThemedView } from '../../shared/ui/ThemedView';
@@ -14,27 +11,18 @@ interface NotificationsListProps {
   notifications: Notification[];
 }
 
+const today = new Date(2025, 5, 17); // 17 June 2025
+const yesterday = new Date(2025, 5, 16); // 16 June 2025
+
 const NotificationsList: React.FC<NotificationsListProps> = ({
   notifications: notifications,
 }) => {
-  const imageMap = {
-    'planet.png': planet,
-    'arrow.png': arrow,
-    'shield.png': shield,
-    'ann.jpg': ann,
-  };
-
-  const today = new Date(2025, 5, 17); // 17 June 2025
-  const yesterday = new Date(2025, 5, 16); // 16 June 2025
-
-  const groupedNotifications = groupTransactions(
-    notifications,
-    today,
-    yesterday,
-    true,
+  const groupedNotifications = useMemo(
+    () => groupTransactions(notifications, today, yesterday, true),
+    [notifications],
   );
 
-  const renderTransaction = (notification: Notification) => {
+  const renderTransaction = useCallback((notification: Notification) => {
     return (
       <ThemedView
         lightColor={Colors.light.backgroundItem}
@@ -47,11 +35,9 @@ const NotificationsList: React.FC<NotificationsListProps> = ({
               <Image
                 style={[
                   styles.img,
-                  notification.photo
-                    ? { width: 40, height: 40 }
-                    : { width: 25, height: 25 },
+                  notification.photo ? styles.lgImg : styles.smImg,
                 ]}
-                source={imageMap[notification.img as keyof typeof imageMap]}
+                source={IMAGE_MAP[notification.img as keyof typeof IMAGE_MAP]}
               />
             </ThemedView>
           ) : (
@@ -107,21 +93,24 @@ const NotificationsList: React.FC<NotificationsListProps> = ({
         </ThemedView>
       </ThemedView>
     );
-  };
+  }, []);
 
-  const renderDayGroup = (group: GroupedTransactions) => (
-    <ThemedView key={group.title + group.data} style={styles.dayGroup}>
-      <ThemedText
-        darkColor="#AEAEAE"
-        style={{ fontSize: 16 }}
-        type="defaultMedium"
-      >
-        {group.title.toUpperCase()}
-      </ThemedText>
-      <ThemedView style={styles.notificationList}>
-        {group.data.map(renderTransaction)}
+  const renderDayGroup = useCallback(
+    (group: GroupedTransactions) => (
+      <ThemedView key={group.title + group.data} style={styles.dayGroup}>
+        <ThemedText
+          darkColor="#AEAEAE"
+          style={styles.font16}
+          type="defaultMedium"
+        >
+          {group.title.toUpperCase()}
+        </ThemedText>
+        <ThemedView style={styles.notificationList}>
+          {group.data.map(renderTransaction)}
+        </ThemedView>
       </ThemedView>
-    </ThemedView>
+    ),
+    [],
   );
 
   return (
@@ -161,6 +150,8 @@ const styles = StyleSheet.create({
   },
   left: {
     alignItems: 'flex-start',
+    backgroundColor: 'transparent',
+    width: 40,
   },
 
   imgContainer: {
@@ -203,6 +194,9 @@ const styles = StyleSheet.create({
   },
 
   dot: { width: 6, height: 6, borderRadius: 50 },
+  font16: { fontSize: 16 },
+  lgImg: { width: 40, height: 40 },
+  smImg: { width: 25, height: 25 },
 });
 
 export default memo(NotificationsList);
