@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "date": "Jun 17, 19:21",
+    "year": "17 June 2025, 17:49 ",
+    "summ": 110,
+    "type": "Money Transfer",
+    "name": "Received from Anna",
+    "img": "ann.jpg",
+    "photo": true,
+    "description": "Debit •• 4385 $4,098.12",
+    "noteType": "Payments",
+    "statusRead": true
+  },
+  {
+    "id": 2,
+    "date": "Jun 16, 23:08",
+    "year": "16 June 2025, 23:08",
+    "summ": 0,
+    "type": "Food",
+    "name": "See our limited offer!",
+    "img": "planet.png",
+    "description": "Would you like to visit new countries? Maybe it’s your time!",
+    "noteType": "Travel"
+  },
+  {
+    "id": 3,
+    "date": "Jun 16, 06:18",
+    "year": "16 June 2025, 06:18",
+    "summ": -14.62,
+    "type": "Food",
+    "name": "Sent to •• 2041",
+    "img": "arrow.png",
+    "description": "Debit •• 4385 $3,987.5",
+    "noteType": "Payments"
+  },
+  {
+    "id": 4,
+    "date": "Mar 24, 15:44",
+    "year": "24 March 2025, 15:44",
+    "summ": 0,
+    "type": "Food",
+    "name": "New login into account",
+    "img": "shield.png",
+    "description": "You have logged in from a new location: iOS 26.0.1 · 109.255.84.7 · Spain",
+    "noteType": "Security"
+  }
+]

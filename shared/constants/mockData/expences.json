@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "month": "june",
+    "week": 1,
+    "expences": 500
+  },
+  {
+    "id": 2,
+    "month": "june",
+    "week": 2,
+    "expences": 400
+  },
+  {
+    "id": 3,
+    "month": "june",
+    "week": 3,
+    "expences": 300
+  },
+  {
+    "id": 4,
+    "month": "june",
+    "week": 4,
+    "expences": 200
+  }
+]

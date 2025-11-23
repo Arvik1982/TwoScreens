@@ -1,5 +1,13 @@
-import { customDarkTheme, customDefaultTheme } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { customDarkTheme, customDefaultTheme } from '@/shared/config/theme';
+import { useColorScheme } from '@/shared/lib/hooks/useColorScheme';
+import {
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_900Black,
+  useFonts,
+} from '@expo-google-fonts/inter';
 import { ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import 'react-native-reanimated';
@@ -14,6 +22,18 @@ const App = ({ children }: { children: React.ReactNode }) => {
   const colorScheme = useColorScheme();
   const theme = colorScheme === 'dark' ? customDarkTheme : customDefaultTheme;
   const style = getLayoutStyles(theme);
+  const [fontsLoaded] = useFonts({
+    'Inter-Regular': Inter_400Regular,
+    'Inter-Medium': Inter_500Medium,
+    'Inter-SemiBold': Inter_600SemiBold,
+    'Inter-Bold': Inter_700Bold,
+    'Inter-Black': Inter_900Black,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+  console.log('Шрифты загружены:', fontsLoaded);
 
   return (
     <ThemeProvider value={theme}>
@@ -26,7 +46,7 @@ export default function RootLayout() {
   return (
     <>
       <App>
-        <Stack>
+        <Stack initialRouteName="(tabs)">
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
       </App>

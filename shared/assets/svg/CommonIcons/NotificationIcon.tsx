@@ -1,6 +1,6 @@
 import Svg, { Path } from 'react-native-svg';
 
-export default function CustomIcon({ color }: { color: string }) {
+export default function NotificationIcon({ color }: { color: string }) {
   return (
     <Svg width={18} height={17} viewBox="0 0 18 17" fill="none">
       <Path

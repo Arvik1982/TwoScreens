@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "class": "premium",
+    "remainder": "4,098.12",
+    "type": "debit",
+    "account": "•• 4385"
+  },
+  {
+    "id": 2,
+    "class": "standart",
+    "remainder": "14.71",
+    "type": "virtual",
+    "account": "•• 9081"
+  },
+  {
+    "id": 3,
+    "class": "standart",
+    "remainder": "500",
+    "type": "virtual",
+    "account": "•• 9084"
+  }
+]
