@@ -24,7 +24,15 @@ const NotificationsList: React.FC<NotificationsListProps> = ({
     'ann.jpg': ann,
   };
 
-  const groupedNotifications = groupTransactions(notifications);
+  const today = new Date(2025, 5, 17); // 17 June 2025
+  const yesterday = new Date(2025, 5, 16); // 16 June 2025
+
+  const groupedNotifications = groupTransactions(
+    notifications,
+    today,
+    yesterday,
+    true,
+  );
 
   const renderTransaction = (notification: Notification) => {
     return (
@@ -37,7 +45,12 @@ const NotificationsList: React.FC<NotificationsListProps> = ({
           {notification.img ? (
             <ThemedView style={styles.imgContainer}>
               <Image
-                style={styles.img}
+                style={[
+                  styles.img,
+                  notification.photo
+                    ? { width: 40, height: 40 }
+                    : { width: 25, height: 25 },
+                ]}
                 source={imageMap[notification.img as keyof typeof imageMap]}
               />
             </ThemedView>
@@ -48,34 +61,49 @@ const NotificationsList: React.FC<NotificationsListProps> = ({
           )}
         </ThemedView>
         <ThemedView style={styles.center}>
-          <ThemedText style={styles.centerHeader}>
-            {notification.name}
-          </ThemedText>
+          <ThemedText type="defaultMedium">{notification.name}</ThemedText>
 
-          <ThemedText style={styles.centerSumm}>
-            {notification.summ > 0 ? '+$' : notification.summ !== 0 ? '-$' : ''}
-            {notification.summ !== 0 && Math.abs(notification.summ)}
-          </ThemedText>
+          {notification.summ ? (
+            <ThemedText
+              darkColor="#FE5900"
+              type="defaultSemiBold"
+              style={styles.centerSummText}
+            >
+              {notification.summ > 0 ? '+$' : '-$'}
+              {notification.summ !== 0 && Math.abs(notification.summ)}
+            </ThemedText>
+          ) : null}
 
-          <ThemedText style={styles.centerDescription}>
+          <ThemedText
+            darkColor="#AEAEAE"
+            type="default"
+            style={styles.centerDescriptionText}
+          >
             {notification.description}
           </ThemedText>
-
-          <ThemedText style={{ flexDirection: 'row' }}>
-            <ThemedText style={styles.centerDate}>
+          <ThemedText style={styles.descriptionTextBottom}>
+            <ThemedText
+              style={styles.descriptionTextBottom}
+              darkColor="#616161"
+            >
               {notification.year}
             </ThemedText>
-            <ThemedText style={styles.centerType}>
+            <ThemedText
+              style={styles.descriptionTextBottom}
+              darkColor="#616161"
+            >
               · {notification.noteType}
             </ThemedText>
           </ThemedText>
         </ThemedView>
         <ThemedView style={styles.right}>
-          <ThemedView
-            lightColor={Colors.light.tint}
-            darkColor={Colors.dark.tint}
-            style={styles.dot}
-          ></ThemedView>
+          {notification.statusRead && (
+            <ThemedView
+              lightColor={Colors.light.tint}
+              darkColor={Colors.dark.tint}
+              style={styles.dot}
+            />
+          )}
         </ThemedView>
       </ThemedView>
     );
@@ -83,10 +111,14 @@ const NotificationsList: React.FC<NotificationsListProps> = ({
 
   const renderDayGroup = (group: GroupedTransactions) => (
     <ThemedView key={group.title + group.data} style={styles.dayGroup}>
-      <ThemedText style={{ fontSize: 16 }} type="defaultMedium">
-        {group.title}
+      <ThemedText
+        darkColor="#AEAEAE"
+        style={{ fontSize: 16 }}
+        type="defaultMedium"
+      >
+        {group.title.toUpperCase()}
       </ThemedText>
-      <ThemedView style={styles.transactionsList}>
+      <ThemedView style={styles.notificationList}>
         {group.data.map(renderTransaction)}
       </ThemedView>
     </ThemedView>
@@ -111,7 +143,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#1F1F1F',
   },
 
-  transactionsList: {
+  notificationList: {
     backgroundColor: 'transparent',
     borderRadius: 0,
   },
@@ -119,30 +151,16 @@ const styles = StyleSheet.create({
   notificationItem: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-
     gap: 12,
-
     paddingVertical: 16,
     marginBottom: 3,
     width: '100%',
     minHeight: 116,
-    paddingHorizontal: 16,
+    paddingRight: 16,
     backgroundColor: 'transparent',
   },
   left: {
     alignItems: 'flex-start',
-  },
-
-  icon: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    backgroundColor: '#F5F5F5',
-    marginRight: 12,
-  },
-  iconAdditional: {
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 
   imgContainer: {
@@ -155,39 +173,35 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   img: {
+    borderRadius: 12,
     width: 25,
     height: 25,
   },
   center: {
     height: '100%',
+    gap: 6,
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
     flex: 1,
     flexShrink: 1,
   },
 
-  centerHeader: {},
-  centerSumm: {},
-  centerDescription: {
+  centerDescriptionText: {
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     backgroundColor: 'transparent',
+    fontSize: 14,
   },
-  centerDate: {},
-  centerType: {},
+  descriptionTextBottom: { flexDirection: 'row', fontSize: 12 },
+  centerSummText: { fontSize: 21 },
 
   right: {
     height: '100%',
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
     backgroundColor: 'transparent',
     width: 20,
   },
 
-  transactionType: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-  },
   dot: { width: 6, height: 6, borderRadius: 50 },
 });
 

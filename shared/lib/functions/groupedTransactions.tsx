@@ -1,9 +1,11 @@
+import { monthsList } from '@/shared/constants/constants';
 import { GroupedTransactions, Transaction } from '@/types/types';
 
 export const groupTransactions = (
   transactions: Transaction[],
-  Today = new Date(2025, 5, 9), // 9 June 2025
-  Yesterday = new Date(2025, 5, 8), // 8 June 2025
+  today = new Date(2025, 5, 9),
+  yesterday = new Date(2025, 5, 8),
+  dateDisplay = false,
 ): GroupedTransactions[] => {
   const groups: { [key: string]: Transaction[] } = {};
 
@@ -21,20 +23,7 @@ export const groupTransactions = (
     customToday?: Date,
     customYesterday?: Date,
   ): string => {
-    const months: { [key: string]: string } = {
-      Jan: 'Jan',
-      Feb: 'Feb',
-      Mar: 'Mar',
-      Apr: 'Apr',
-      May: 'May',
-      Jun: 'Jun',
-      Jul: 'Jul',
-      Aug: 'Aug',
-      Sep: 'Sep',
-      Oct: 'Oct',
-      Nov: 'Nov',
-      Dec: 'Dec',
-    };
+    const months = monthsList;
 
     const [monthStr, dayStr] = dateString.split(' ');
     const day = parseInt(dayStr);
@@ -47,27 +36,39 @@ export const groupTransactions = (
       day,
     );
 
-    // Используем кастомные даты или текущие по умолчанию
+    // Получаем год из первой транзакции в группе
+    const groupTransactions = groups[dateString];
+    const firstTransaction = groupTransactions[0];
+    const yearMatch = firstTransaction.date.match(/\d{4}/);
+
     const today = customToday || new Date();
     const yesterday = customYesterday || new Date(today);
+
+    const year = yearMatch
+      ? parseInt(yearMatch[0])
+      : customToday?.getFullYear();
 
     if (!customYesterday) {
       yesterday.setDate(yesterday.getDate() - 1);
     }
 
     if (transactionDate.toDateString() === today.toDateString()) {
-      return 'Today';
+      return dateDisplay
+        ? `Today ${','} ${day} ${month.slice(0, 3)} `
+        : 'Today';
     }
 
     if (transactionDate.toDateString() === yesterday.toDateString()) {
-      return 'Yesterday';
+      return dateDisplay
+        ? `Yesterday${','} ${day} ${month.slice(0, 3)}`
+        : 'Yesterday';
     }
 
-    return `${month} ${day}`;
+    return `${day} ${month} ${year}`;
   };
 
-  const customToday = Today;
-  const customYesterday = Yesterday;
+  const customToday = today;
+  const customYesterday = yesterday;
 
   return Object.keys(groups).map((date) => ({
     title: getGroupTitle(date, customToday, customYesterday),

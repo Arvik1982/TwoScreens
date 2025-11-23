@@ -50,7 +50,7 @@ export default function Notifications() {
 
       <ThemedView
         style={{
-          paddingHorizontal: 16,
+          // paddingHorizontal: 16,
           flexDirection: 'row',
           justifyContent: 'space-between',
           width: '100%',

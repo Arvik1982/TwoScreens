@@ -84,9 +84,11 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
           lightColor={Colors.light.backgroundItem}
           darkColor={Colors.dark.backgroundItem}
         >
-          <ThemedText type="defaultMedium">
-            ${Math.abs(transaction.summ).toFixed(2)}
-          </ThemedText>
+          {transaction.summ && (
+            <ThemedText type="defaultMedium">
+              ${Math.abs(transaction.summ).toFixed(2)}
+            </ThemedText>
+          )}
           <ThemedText style={{ color: '#B3B3B3' }} type="default">
             {transaction.date}
           </ThemedText>

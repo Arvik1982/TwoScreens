@@ -7,8 +7,10 @@
     "type": "Money Transfer",
     "name": "Received from Anna",
     "img": "ann.jpg",
+    "photo": true,
     "description": "Debit •• 4385 $4,098.12",
-    "noteType": "Payments"
+    "noteType": "Payments",
+    "statusRead": true
   },
   {
     "id": 2,
