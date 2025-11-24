@@ -1,6 +1,7 @@
-import Filter from '@/features/notifications/filter';
+import Filter from '@/features/notifications/Filter';
 import Notificationslist from '@/features/notifications/Notificationslist';
-import TopBox from '@/features/notifications/topBox';
+import TopBox from '@/features/notifications/TopBox';
+
 import notifications from '@/shared/constants/mockData/notifications.json';
 import { ThemedView } from '@/shared/ui/ThemedView';
 import { StyleSheet } from 'react-native';
