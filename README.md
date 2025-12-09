@@ -10,14 +10,14 @@
 - **NotificationsScreen** — по клику на имя пользователя
 
 ## ✅ **Статус: Полностью готово**
-✅ HomeScreen — основной экран
-✅ NotificationsScreen — уведомления (переход через тап по фамилии на HomeScreen )
-✅ Bottom Tab Navigation
-✅ User Profile click → Notifications
-✅ Expo Go ready (npx expo start)
+- ✅ HomeScreen — основной экран
+- ✅ NotificationsScreen — уведомления (переход через тап по фамилии на HomeScreen )
+- ✅ Bottom Tab Navigation
+- ✅ User Profile click → Notifications
+- ✅ Expo Go ready (npx expo start)
 
 ## 🚀 **Запуск**
-git clone https://github.com/Arvik1982/TwoScreens.git
-cd TwoScreens
-npm install
-npx expo start
+- git clone https://github.com/Arvik1982/TwoScreens.git
+- cd TwoScreens
+- npm install
+- npx expo start
